@@ -1,1 +1,1 @@
-# GE-Aerospace-A-Decade-of-AI-in-Flight-
+# GE-Aerospace-A-Decade-of-AI-in-Flight
