@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GE Aerospace: A Decade of AI Innovation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: The SPA is designed as an interactive dashboard with a clear, tab-based navigation for the three core pillars (Materials, Design, Logistics) and a forward-looking "Future" section. This structure was chosen over a linear scroll to allow users to directly access topics of interest and compare key metrics within focused, self-contained views. Each tab reveals a dedicated section with an introductory summary, dynamic stat cards for high-impact numbers, and an interactive chart for comparing multiple data points. This thematic, non-linear approach enhances usability by breaking down a dense report into digestible, explorable modules, making it easier for users to synthesize the information. -->
+    <!-- Visualization & Content Choices: 
+        - Intro: Goal(Inform) -> Hero section with quote -> HTML/CSS -> Sets the report's main theme.
+        - Stat Cards (All Sections): Goal(Inform) -> Large numbers (e.g., $170B backlog, 3M+ compute hours) -> HTML/Tailwind -> Quickly conveys high-impact, standalone metrics.
+        - Materials/Manufacturing Chart: Goal(Compare) -> Multiple % improvements -> Bar Chart -> Chart.js/Canvas -> Allows direct visual comparison of the magnitude of different efficiency gains. Interaction: Tooltips for exact values.
+        - Logistics/Readiness Chart: Goal(Compare) -> Predictive maintenance benefits -> Bar Chart -> Chart.js/Canvas -> Effectively compares diverse metrics like alert reduction and detection improvement. Interaction: Tooltips for exact values.
+        - Navigation: Goal(Organize) -> Thematic sections -> JS-powered tabs -> JS/CSS -> Provides a clear, intuitive structure for exploring the report's main pillars without overwhelming the user.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-tab {
+            background-color: #0c4a6e; /* sky-900 */
+            color: white;
+            border-color: #0c4a6e;
+        }
+        .inactive-tab {
+            background-color: #f1f5f9; /* slate-100 */
+            color: #1e293b; /* slate-800 */
+            border-color: #cbd5e1; /* slate-300 */
+        }
+        .content-section {
+            display: none;
+        }
+        .active-section {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-sky-900 mb-4">A Decade of AI Innovation at GE Aerospace</h1>
+            <p class="text-lg text-slate-600 max-w-4xl mx-auto">Exploring how Artificial Intelligence has been strategically infused into every facet of GE's operations for over ten years, revolutionizing how the future of flight is designed, built, and maintained.</p>
+        </header>
+
+        <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+            <div class="text-center mb-8 border-b border-slate-200 pb-8">
+                <blockquote class="text-xl italic text-slate-700 max-w-3xl mx-auto">
+                    "AI is infused in everything we do —from optimizing supply chains to accelerating materials development and enhancing national defense technologies."
+                </blockquote>
+                <cite class="block text-right text-slate-500 mt-2 pr-4">- Joe Vinciquerra, GM & Senior Executive Director, GE Aerospace Research</cite>
+            </div>
+
+            <nav class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8" id="nav-tabs">
+                <button data-target="materials" class="nav-tab active-tab text-sm md:text-base font-semibold py-2 px-4 rounded-full border-2 transition-colors duration-300">Materials & Manufacturing</button>
+                <button data-target="design" class="nav-tab inactive-tab text-sm md:text-base font-semibold py-2 px-4 rounded-full border-2 transition-colors duration-300">Engine & Systems Design</button>
+                <button data-target="logistics" class="nav-tab inactive-tab text-sm md:text-base font-semibold py-2 px-4 rounded-full border-2 transition-colors duration-300">Logistics & Readiness</button>
+                <button data-target="future" class="nav-tab inactive-tab text-sm md:text-base font-semibold py-2 px-4 rounded-full border-2 transition-colors duration-300">The Future of Flight</button>
+            </nav>
+
+            <main>
+                <div id="materials-content" class="content-section active-section animate-fade-in">
+                    <div class="p-4 rounded-lg">
+                        <h2 class="text-3xl font-bold text-sky-800 mb-4">Advanced Materials & Additive Manufacturing</h2>
+                        <p class="text-slate-600 mb-6">This section explores how GE Aerospace leverages AI to pioneer the discovery of novel materials and revolutionize manufacturing. Through generative design and machine learning, GE is not just producing parts faster but creating fundamentally superior components—lighter, stronger, and consolidated from hundreds of pieces into one—achieving unprecedented performance and efficiency for the most demanding applications like hypersonics.</p>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <h3 class="text-xl font-semibold text-slate-700">Key Achievements:</h3>
+                                <div class="bg-slate-100 p-4 rounded-lg">
+                                    <p class="font-bold text-sky-800">3x Airflow Increase</p>
+                                    <p class="text-sm text-slate-600">Achieved in an additively manufactured hypersonic dual-mode ramjet, showcasing game-changing performance.</p>
+                                </div>
+                                <div class="bg-slate-100 p-4 rounded-lg">
+                                    <p class="font-bold text-sky-800">150 Parts to 1</p>
+                                    <p class="text-sm text-slate-600">Consolidated over 150 separate components into a single monolithic 3D-printed turbine frame, simplifying the supply chain.</p>
+                                </div>
+                                 <div class="bg-slate-100 p-4 rounded-lg">
+                                    <p class="font-bold text-sky-800">Ceramic Matrix Composites (CMCs)</p>
+                                    <p class="text-sm text-slate-600">One-third the weight of traditional materials and able to operate at 500°F hotter, enabling greater engine power and durability.</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-col">
+                                <h3 class="text-xl font-semibold text-slate-700 mb-4 text-center">AI-Driven Manufacturing Improvements</h3>
+                                <div class="chart-container w-full max-w-2xl mx-auto h-80 md:h-96 max-h-[450px]">
+                                    <canvas id="manufacturingChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="design-content" class="content-section animate-fade-in">
+                     <div class="p-4 rounded-lg">
+                        <h2 class="text-3xl font-bold text-sky-800 mb-4">Accelerating Engine & Systems Design</h2>
+                        <p class="text-slate-600 mb-6">In this section, discover how GE Aerospace pairs AI with some of the world's most powerful supercomputers to reinvent engine design. By running simulations at an unprecedented scale, GE is taking years off the development process for next-generation propulsion systems like the Open Fan, targeting ambitious goals for fuel efficiency and sustainability in collaboration with partners like NASA and the DOE.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
+                            <div class="bg-slate-100 p-6 rounded-xl">
+                                <p class="text-4xl md:text-5xl font-bold text-sky-800 mb-2">>20%</p>
+                                <p class="font-semibold text-slate-700">Better Fuel Efficiency</p>
+                                <p class="text-sm text-slate-500">Target for the CFM RISE program compared to today's most efficient engines.</p>
+                            </div>
+                            <div class="bg-slate-100 p-6 rounded-xl">
+                                <p class="text-4xl md:text-5xl font-bold text-sky-800 mb-2">>3M</p>
+                                <p class="font-semibold text-slate-700">Supercomputing Hours</p>
+                                <p class="text-sm text-slate-500">Secured on DOE exascale systems to model advanced engine architectures.</p>
+                            </div>
+                            <div class="bg-slate-100 p-6 rounded-xl">
+                                <p class="text-4xl md:text-5xl font-bold text-sky-800 mb-2">100%</p>
+                                <p class="font-semibold text-slate-700">SAF Compatibility</p>
+                                <p class="text-sm text-slate-500">A key goal for the RISE program, ensuring future engines are sustainable.</p>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                             <h3 class="text-xl font-semibold text-slate-700 mb-4">The Power of Digital Twins & Supercomputing</h3>
+                             <p class="text-slate-600">GE Aerospace is a top industrial user of U.S. Department of Energy (DOE) exascale supercomputers, enabling engineers to run highly complex simulations of engine performance. This computational power is crucial for training the AI models that optimize designs for factors like aerodynamics and noise reduction. The Open Fan architecture, for instance, is being refined through these simulations, which model its integration with the aircraft wing to maximize efficiency. This symbiotic relationship between supercomputing and AI accelerates breakthroughs, making ambitious programs like RISE possible.</p>
+                        </div>
+                     </div>
+                </div>
+
+                <div id="logistics-content" class="content-section animate-fade-in">
+                    <div class="p-4 rounded-lg">
+                        <h2 class="text-3xl font-bold text-sky-800 mb-4">Optimizing Logistics & Pilot Readiness</h2>
+                        <p class="text-slate-600 mb-6">This area highlights AI's critical role in transforming aircraft maintenance from a reactive to a predictive model. By analyzing data from a global fleet of over 70,000 engines, GE's AI systems, including Digital Twins and the Blade Inspection Tool (BIT), forecast maintenance needs with remarkable accuracy. This ensures higher aircraft availability, enhances safety, and significantly reduces operational costs for both commercial and military customers.</p>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                             <div class="space-y-4">
+                                <h3 class="text-xl font-semibold text-slate-700">Key Achievements:</h3>
+                                <div class="bg-slate-100 p-4 rounded-lg">
+                                    <p class="font-bold text-sky-800">One-Third Reduction</p>
+                                    <p class="text-sm text-slate-600">In unscheduled engine removals thanks to Analytics-Based Maintenance (ABM) systems.</p>
+                                </div>
+                                <div class="bg-slate-100 p-4 rounded-lg">
+                                    <p class="font-bold text-sky-800">Digital Twin Technology</p>
+                                    <p class="text-sm text-slate-600">Virtual engine replicas that simulate real-world performance, dramatically improving forecast accuracy for parts and maintenance.</p>
+                                </div>
+                                <div class="bg-slate-100 p-4 rounded-lg">
+                                    <p class="font-bold text-sky-800">18 Million MRO Records</p>
+                                    <p class="text-sm text-slate-600">Digitized and analyzed by AI to enhance data integrity and predictive model accuracy.</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-col">
+                                <h3 class="text-xl font-semibold text-slate-700 mb-4 text-center">Predictive Maintenance Impact</h3>
+                               <div class="chart-container w-full max-w-2xl mx-auto h-80 md:h-96 max-h-[450px]">
+                                    <canvas id="logisticsChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="future-content" class="content-section animate-fade-in">
+                     <div class="p-4 rounded-lg">
+                        <h2 class="text-3xl font-bold text-sky-800 mb-4">Inventing the Future of Flight</h2>
+                        <p class="text-slate-600 mb-6">Looking ahead, GE Aerospace is doubling down on its AI-driven strategy. With a robust financial position and massive investments planned for manufacturing, R&D, and talent, the company is poised to lead the next era of aviation. The focus is on scaling its innovations—from additive manufacturing to hybrid-electric propulsion—to meet future demand and continue pushing the boundaries of what's possible in a more sustainable and efficient aerospace industry.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
+                            <div class="bg-sky-100 border-2 border-sky-200 p-6 rounded-xl">
+                                <p class="text-4xl md:text-5xl font-bold text-sky-900 mb-2">~$1B</p>
+                                <p class="font-semibold text-slate-800">2025 U.S. Investment</p>
+                                <p class="text-sm text-slate-600">In factories and supply chain, nearly doubling the previous year's commitment.</p>
+                            </div>
+                            <div class="bg-sky-100 border-2 border-sky-200 p-6 rounded-xl">
+                                <p class="text-4xl md:text-5xl font-bold text-sky-900 mb-2">>$170B</p>
+                                <p class="font-semibold text-slate-800">Equipment & Services Backlog</p>
+                                <p class="text-sm text-slate-600">Indicating strong future demand and long-term growth.</p>
+                            </div>
+                             <div class="bg-sky-100 border-2 border-sky-200 p-6 rounded-xl">
+                                <p class="text-4xl md:text-5xl font-bold text-sky-900 mb-2">~5,000</p>
+                                <p class="font-semibold text-slate-800">New U.S. Hires in 2025</p>
+                                <p class="text-sm text-slate-600">In engineering and manufacturing roles to drive future innovation.</p>
+                            </div>
+                        </div>
+                        <div class="mt-8 bg-white p-6 rounded-lg">
+                             <h3 class="text-xl font-semibold text-slate-700 mb-4">Roadmap to 2030 and Beyond</h3>
+                             <p class="text-slate-600">GE Aerospace's Additive Manufacturing roadmap for 2030 envisions an "order of magnitude growth in the number of flying AM parts." This ambitious goal signals a belief that AI will enable truly disruptive advancements, not just incremental improvements. The company's R&D efforts, backed by approximately $2.7 billion in 2024 (including partner funding), are driving breakthroughs in Open Fan, hybrid electric propulsion, and hypersonics. This proactive strategy solidifies AI as the core competitive differentiator for securing future market leadership.</p>
+                        </div>
+                     </div>
+                </div>
+            </main>
+
+        </div>
+        <footer class="text-center mt-8 text-sm text-slate-400">
+            <p>Interactive report generated based on the GE Aerospace AI Applications Explored source document.</p>
+        </footer>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const manufacturingData = {
+        labels: ['Lead Time Reduction (TCF)', 'First-Pass Yield ↑', 'Production Time ↓', 'Cost & Weight ↓ (TCF)', 'Material Waste ↓'],
+        datasets: [{
+            label: '% Improvement / Reduction',
+            data: [75, 44, 38, 30, 25],
+            backgroundColor: [
+                'rgba(8, 145, 178, 0.7)', // cyan-600
+                'rgba(14, 116, 144, 0.7)', // cyan-700
+                'rgba(21, 94, 117, 0.7)', // cyan-800
+                'rgba(15, 76, 100, 0.7)', // cyan-900
+                'rgba(22, 57, 78, 0.7)', 
+            ],
+            borderColor: [
+                'rgba(8, 145, 178, 1)',
+                'rgba(14, 116, 144, 1)',
+                'rgba(21, 94, 117, 1)',
+                'rgba(15, 76, 100, 1)',
+                'rgba(22, 57, 78, 1)',
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    const logisticsData = {
+        labels: ['False Alerts ↓ (ABM)', 'Inspection Time ↓ (BIT)', 'Detection Rate ↑ (ABM)', 'Detection Rate ↑ (BIT)'],
+        datasets: [{
+            label: '% Improvement / Reduction',
+            data: [50, 50, 45, 34],
+             backgroundColor: [
+                'rgba(59, 130, 246, 0.7)', // blue-500
+                'rgba(37, 99, 235, 0.7)', // blue-600
+                'rgba(29, 78, 216, 0.7)', // blue-700
+                'rgba(30, 64, 175, 0.7)', // blue-800
+            ],
+            borderColor: [
+                'rgba(59, 130, 246, 1)',
+                'rgba(37, 99, 235, 1)',
+                'rgba(29, 78, 216, 1)',
+                'rgba(30, 64, 175, 1)',
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    const chartOptions = {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return `${context.dataset.label}: ${context.raw}%`;
+                    }
+                }
+            }
+        },
+        scales: {
+            x: {
+                beginAtZero: true,
+                grid: {
+                    color: '#e2e8f0' // slate-200
+                },
+                ticks: {
+                     callback: function(value) {
+                        return value + '%';
+                    },
+                    color: '#475569' // slate-600
+                }
+            },
+            y: {
+                 grid: {
+                    display: false
+                },
+                ticks: {
+                    color: '#334155' // slate-700
+                }
+            }
+        }
+    };
+
+    let manufacturingChart, logisticsChart;
+
+    function createManufacturingChart() {
+        const ctx = document.getElementById('manufacturingChart')?.getContext('2d');
+        if (ctx) {
+             manufacturingChart = new Chart(ctx, {
+                type: 'bar',
+                data: manufacturingData,
+                options: chartOptions
+            });
+        }
+    }
+    
+    function createLogisticsChart() {
+        const ctx = document.getElementById('logisticsChart')?.getContext('2d');
+        if(ctx) {
+            logisticsChart = new Chart(ctx, {
+                type: 'bar',
+                data: logisticsData,
+                options: chartOptions
+            });
+        }
+    }
+
+    const tabs = document.querySelectorAll('.nav-tab');
+    const contentSections = document.querySelectorAll('.content-section');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.dataset.target;
+
+            tabs.forEach(t => {
+                t.classList.remove('active-tab');
+                t.classList.add('inactive-tab');
+            });
+
+            tab.classList.add('active-tab');
+            tab.classList.remove('inactive-tab');
+
+            contentSections.forEach(section => {
+                if (section.id === `${target}-content`) {
+                    section.classList.add('active-section');
+                } else {
+                    section.classList.remove('active-section');
+                }
+            });
+            
+            if (target === 'materials' && !manufacturingChart) createManufacturingChart();
+            if (target === 'logistics' && !logisticsChart) createLogisticsChart();
+
+        });
+    });
+    
+    createManufacturingChart();
+});
+</script>
+</body>
+</html>
